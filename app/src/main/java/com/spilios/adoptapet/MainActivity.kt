@@ -21,9 +21,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
@@ -74,6 +76,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+//////////////////All the Navigation/////////////////////////
 @Composable
 fun Navigation(){
     val authViewModel = AuthViewModel() // Instantiate AuthViewModel here
@@ -100,35 +103,7 @@ fun Navigation(){
     }
 }
 
-@Composable
-fun LogoutConfirmationDialog(
-    onLogoutConfirmed: () -> Unit,
-    onDismissRequest: () -> Unit
-) {
-    AlertDialog(
-        onDismissRequest = onDismissRequest,
-        title = { Text(text = "Logout") },
-        text = { Text(text = "Are you sure you want to logout?") },
-        confirmButton = {
-            Button(
-                onClick = {
-                    onLogoutConfirmed()
-                    onDismissRequest()
-                }
-            ) {
-                Text(text = "Logout")
-            }
-        },
-        dismissButton = {
-            Button(
-                onClick = onDismissRequest
-            ) {
-                Text(text = "Cancel")
-            }
-        }
-    )
-}
-
+///////////////Home - Main Screen///////////////////////////
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(navController: NavController, authViewModel: AuthViewModel) {
@@ -184,7 +159,7 @@ fun HomeScreen(navController: NavController, authViewModel: AuthViewModel) {
     }
 }
 
-
+///////////PetCard//////////////////
 @Composable
 fun PetCard(
     petId: Int,
@@ -215,7 +190,7 @@ fun PetCard(
             }
         ) {
             Image(
-                painter = painterResource(pet.imageResId), // Use pet's image resource ID
+                painter = painterResource(pet.imageResId),
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
@@ -239,8 +214,8 @@ fun PetCard(
     }
 }
 
-// Destination screen composable
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")//vgazei error xwris auto
+///////////////// Detail screen composable//////////////////
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter") //xwris afto error
 @Composable
 fun DetailScreen(navController: NavController, petId: Int) {
     
@@ -280,77 +255,87 @@ fun DetailScreen(navController: NavController, petId: Int) {
                     Image(
                         painter = painterResource(pet.imageResId),
                         contentDescription = "Pet's Picture",
-                        modifier = Modifier
-                            .fillMaxWidth() // Capture the whole screen width
-                            .height(200.dp) // Set a specific height
-                            //.aspectRatio(16f/9f)
-                    )
-                    Row(
+                        contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(Pink_light)
-                            .padding(50.dp),
-                        horizontalArrangement = Arrangement.SpaceAround,
-                        verticalAlignment = Alignment.CenterVertically
+                            .height(280.dp)
+                    )
+                    Column (
+                        modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
                     ){
-                        Row (
-                            modifier = Modifier,
-                            horizontalArrangement = Arrangement.SpaceBetween,
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Pink_light)
+                                .padding(40.dp),
+                            horizontalArrangement = Arrangement.SpaceAround,
                             verticalAlignment = Alignment.CenterVertically
                         ){
-                            Text(text = "${pet.name} ")
-                            Text(text = sex, style = TextStyle(fontSize = 14.sp))
+                            Row (
+                                modifier = Modifier,
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ){
+                                Text(
+                                    text = "${pet.name} ",
+                                    fontSize = (24.sp)
+                                )
+                                Text(text = sex, style = TextStyle(fontSize = 14.sp))
+                            }
+                            Text(text = "${pet.age} years old", fontSize = (24.sp))
                         }
-                        Text(text = "${pet.age} years old")
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Row (
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.CenterVertically
-                    ){
-                        Text(
-                            text = pet.breed,
-                            color = Color.White,
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Row (
                             modifier = Modifier
-                                .clip(RoundedCornerShape(bottomEnd = 16.dp, topEnd = 16.dp))
-                                .background(Pink_dark)
-                                .padding(20.dp)
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End,
-                        verticalAlignment = Alignment.CenterVertically
-                    ){
-                        Text(
-                            text = pet.description,
-                            color = Color.White,
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.CenterVertically
+                        ){
+                            Text(
+                                text = pet.breed,
+                                color = Color.White,
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(bottomEnd = 25.dp, topEnd = 25.dp))
+                                    .background(Pink_dark)
+                                    .padding(16.dp)
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Row(
                             modifier = Modifier
-                                .clip(RoundedCornerShape(topStart = 16.dp, bottomStart = 16.dp))
-                                .background(Purple)
-                                .padding(20.dp)
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Row (
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.CenterVertically
-                    ){
-                        Text(
-                            text = pet.health,
-                            color = Color.White,
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.End,
+                            verticalAlignment = Alignment.CenterVertically
+                        ){
+                            Text(
+                                text = pet.description,
+                                color = Color.White,
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(topStart = 25.dp, bottomStart = 25.dp))
+                                    .background(Purple)
+                                    .padding(16.dp)
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Row (
                             modifier = Modifier
-                                .clip(RoundedCornerShape(bottomEnd = 16.dp, topEnd = 16.dp))
-                                .background(Pink_dark)
-                                .padding(20.dp)
-                        )
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.CenterVertically
+                        ){
+                            Text(
+                                text = pet.health,
+                                color = Color.White,
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(bottomEnd = 25.dp, topEnd = 25.dp))
+                                    .background(Pink_dark)
+                                    .padding(16.dp)
+                            )
+                        }
                     }
+
                 }
             } else {
                 Text(text = "Pet not found")
@@ -358,7 +343,9 @@ fun DetailScreen(navController: NavController, petId: Int) {
         }
     )
 }
+///////////////////////////////////////////////////////////////
 
+////////////////////////Auth function//////////////////////////////////////
 class AuthViewModel : ViewModel() {
     private val auth = FirebaseAuth.getInstance()
 
@@ -388,9 +375,9 @@ class AuthViewModel : ViewModel() {
         auth.signOut()
     }
 }
+/////////////////////////////////////////////////////////////////////////
 
-
-//Login
+///////////////////////////////Login/////////////////////////////////////
 @Composable
 fun LoginScreen(
     authViewModel: AuthViewModel,
@@ -404,9 +391,9 @@ fun LoginScreen(
 
     Column(
         modifier = Modifier
-            .padding(16.dp)
             .fillMaxSize()
-            .background(Color.White),
+            .background(Color.White)
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -437,7 +424,7 @@ fun LoginScreen(
             } else {
                 authViewModel.login(emailState.value, passwordState.value) { success ->
                     if (success) {
-                        onLoginSuccess() // Navigate to ImageCard upon successful login
+                        onLoginSuccess() // navigate to main after successful login
                     } else {
                         wrongCredentialsError.value = true
                     }
@@ -450,7 +437,7 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = "Don't Have an account?")
         Button(onClick = {
-            navController.navigate(Screen.SignUp.route) // Navigate to SignUpScreen
+            navController.navigate(Screen.SignUp.route) // go to signup page
         }) {
             Text(text = "Sign-Up")
         }
@@ -463,6 +450,7 @@ fun LoginScreen(
     }
 }
 
+////////////////////Sign-Up////////////////////////////////////
 @Composable
 fun SignUpScreen(authViewModel: AuthViewModel, navController: NavController) {
     val emailState = remember { mutableStateOf("") }
@@ -527,7 +515,7 @@ fun SignUpScreen(authViewModel: AuthViewModel, navController: NavController) {
             Text("Sign Up")
         }
         Spacer(modifier = Modifier.height(16.dp))
-        // Button to navigate back to login screen
+        // go back to login screen
         Button(onClick = {
             navController.navigate(Screen.Login.route)
         }) {
@@ -551,6 +539,36 @@ fun SignUpScreen(authViewModel: AuthViewModel, navController: NavController) {
     }
 }
 
+
+///////////////////All Alert Dialogs:///////////////////////////////////////
+@Composable
+fun LogoutConfirmationDialog(
+    onLogoutConfirmed: () -> Unit,
+    onDismissRequest: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        title = { Text(text = "Logout") },
+        text = { Text(text = "Are you sure you want to logout?") },
+        confirmButton = {
+            Button(
+                onClick = {
+                    onLogoutConfirmed()
+                    onDismissRequest()
+                }
+            ) {
+                Text(text = "Logout")
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = onDismissRequest
+            ) {
+                Text(text = "Cancel")
+            }
+        }
+    )
+}
 @Composable
 fun SignUpSuccessDialog(onDismissRequest: () -> Unit) {
     AlertDialog(
@@ -633,3 +651,5 @@ fun SignUpErrorDialog(onDismissRequest: () -> Unit) {
         }
     )
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////
