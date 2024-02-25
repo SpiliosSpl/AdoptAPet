@@ -258,7 +258,7 @@ fun DetailScreen(navController: NavController, petId: Int) {
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(280.dp)
+                            .height(350.dp)
                     )
                     Column (
                         modifier = Modifier
