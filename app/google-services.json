@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "234970826698",
+    "project_id": "adoptapet-e23a4",
+    "storage_bucket": "adoptapet-e23a4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:234970826698:android:d7dac891faa47dfb95b133",
+        "android_client_info": {
+          "package_name": "com.spilios.adoptapet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAasghFTrasj5Df1rIhekmjTdRP58p123M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
