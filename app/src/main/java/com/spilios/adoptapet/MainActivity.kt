@@ -79,7 +79,7 @@ class MainActivity : ComponentActivity() {
 //////////////////All the Navigation/////////////////////////
 @Composable
 fun Navigation(){
-    val authViewModel = AuthViewModel() // Instantiate AuthViewModel here
+    val authViewModel = AuthViewModel()
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screen.Login.route) {
         composable(Screen.Login.route) {
